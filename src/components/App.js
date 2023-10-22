@@ -17,6 +17,7 @@ export const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
+    console.log('use', contacts);
     localStorage.setItem('contact-item', JSON.stringify(contacts));
   }, [contacts]);
 
@@ -35,16 +36,9 @@ export const App = () => {
   };
 
   const deleteContact = evt => {
-    contacts.forEach(element => {
-      if (element.name === evt.target.id) {
-        const del = contacts.indexOf(element);
-        contacts.splice(del, 1);
-        localStorage.setItem('contact-item', JSON.stringify(contacts));
-        setContacts(contacts);
-
-        console.log('del', contacts);
-      }
-    });
+    setContacts(prevState =>
+      prevState.filter(element => element.name !== evt.target.id)
+    );
   };
 
   const onFilter = evt => {
@@ -57,7 +51,7 @@ export const App = () => {
     return contact.name.toLowerCase().includes(normalizedFilter);
   });
 
-  console.log(visibleContacts);
+  console.log(contacts);
 
   return (
     <div className="card">
